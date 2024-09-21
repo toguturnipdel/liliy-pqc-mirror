@@ -1,0 +1,9 @@
+[submodule "external/vcpkg"]
+	path = external/vcpkg
+	url = https://github.com/microsoft/vcpkg.git
+[submodule "external/liboqs"]
+	path = external/liboqs
+	url = https://github.com/open-quantum-safe/liboqs.git
+[submodule "external/oqs-provider"]
+	path = external/oqs-provider
+	url = https://github.com/open-quantum-safe/oqs-provider.git

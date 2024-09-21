@@ -1,0 +1,10 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "dependencies": [
+        "openssl",
+        "boost",
+        "fmt",
+        "spdlog"
+    ],
+    "builtin-baseline": "98aa6396292d57e737a6ef999d4225ca488859d5"
+}
