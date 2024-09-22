@@ -7,3 +7,6 @@
 [submodule "external/oqs-provider"]
 	path = external/oqs-provider
 	url = https://github.com/open-quantum-safe/oqs-provider.git
+[submodule "external/qsc-key-encoder"]
+	path = external/qsc-key-encoder
+	url = https://github.com/Quantum-Safe-Collaboration/qsc-key-encoder.git

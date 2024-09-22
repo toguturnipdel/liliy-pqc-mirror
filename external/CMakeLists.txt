@@ -20,7 +20,7 @@ execute_process(
             --no-warn-unused-cli 
             -S${CMAKE_CURRENT_SOURCE_DIR}/liboqs
             -B${CMAKE_CURRENT_BINARY_DIR}/liboqs
-            -G Ninja
+            -G${CMAKE_GENERATOR}
     ECHO_OUTPUT_VARIABLE
     ECHO_ERROR_VARIABLE
     COMMAND_ERROR_IS_FATAL ANY
@@ -50,7 +50,15 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# qsc-key-encoder
+add_subdirectory(qsc-key-encoder)
+set_target_properties(qsc_key_encoder_test
+    PROPERTIES
+    EXCLUDE_FROM_ALL true
+)
+
 # oqs-provider
 set(OQS_PROVIDER_BUILD_STATIC ON CACHE BOOL "" FORCE)
+set(OQS_KEM_ENCODERS ON CACHE BOOL "" FORCE)
 set(liboqs_DIR "${CMAKE_CURRENT_BINARY_DIR}/liboqs/install/lib/cmake/liboqs" CACHE STRING "" FORCE)
 add_subdirectory(oqs-provider)
