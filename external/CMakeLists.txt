@@ -61,5 +61,5 @@ set_target_properties(qsc_key_encoder_test
 # oqs-provider
 set(OQS_PROVIDER_BUILD_STATIC ON CACHE BOOL "" FORCE)
 set(OQS_KEM_ENCODERS ON CACHE BOOL "" FORCE)
-set(liboqs_DIR "${CMAKE_CURRENT_BINARY_DIR}/liboqs/install/lib64/cmake/liboqs" CACHE STRING "" FORCE)
+set(liboqs_DIR "${CMAKE_CURRENT_BINARY_DIR}/liboqs/install/lib/cmake/liboqs" CACHE STRING "" FORCE)
 add_subdirectory(oqs-provider)

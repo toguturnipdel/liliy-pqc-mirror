@@ -103,10 +103,10 @@ namespace lily::net
         }
 
         // Set the supported signature algorithm
-        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), "dilithium5") <= 0)
+        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), "dilithium2:p256_dilithium2:rsa3072_dilithium2:dilithium3:p384_dilithium3:dilithium5:p521_dilithium5") <= 0)
         {
             spdlog::error(
-                "Lily-PQC server context set key exchange algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
+                "Lily-PQC server context set supported signature algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
