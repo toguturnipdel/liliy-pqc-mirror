@@ -90,7 +90,8 @@ namespace lily::net
         }
 
         // Only allow TLS 1.3 for communication
-        SSL_CTX_set_options(listener.ctx.native_handle(), SSL_OP_ALLOW_CLIENT_RENEGOTIATION);
+        SSL_CTX_set_options(listener.ctx.native_handle(),
+                            SSL_OP_ALLOW_CLIENT_RENEGOTIATION | SSL_OP_CIPHER_SERVER_PREFERENCE);
         SSL_CTX_set_min_proto_version(listener.ctx.native_handle(), TLS1_3_VERSION);
         SSL_CTX_set_max_proto_version(listener.ctx.native_handle(), TLS1_3_VERSION);
 
@@ -98,6 +99,14 @@ namespace lily::net
         if (SSL_CTX_set1_groups_list(listener.ctx.native_handle(), "x25519_kyber768") <= 0)
         {
             spdlog::error("Lily-PQC server context set key exchange algorithm failed! Cause: SSL_CTX_set1_groups_list");
+            return ErrorCode::LILY_ERRORCODE_EXPECTED;
+        }
+
+        // Set the supported signature algorithm
+        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), "dilithium5") <= 0)
+        {
+            spdlog::error(
+                "Lily-PQC server context set key exchange algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
