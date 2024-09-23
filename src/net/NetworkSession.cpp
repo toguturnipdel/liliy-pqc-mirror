@@ -1,3 +1,5 @@
+#include <chrono>
+#include <fmt/core.h>
 #include <spdlog/spdlog.h>
 
 #include <lily/core/ErrorCode.h>
@@ -15,10 +17,15 @@ namespace lily::net
         // Set the timeout.
         boost::beast::get_lowest_layer(this->stream).expires_never();
 
-        // Perform the SSL handshake
+        // Perform the SSL handshake and measure the handshake time using `std::chrono`. This will measure the time
+        // elapsed to do the whole handshake process.
+        auto beginHandshakeTime {std::chrono::high_resolution_clock::now()};
         this->stream.handshake(boost::asio::ssl::stream_base::server, ec);
+        auto totalHandshakeTime {std::chrono::high_resolution_clock::now() - beginHandshakeTime};
         if (ec)
             return spdlog::error("Client handshake failed! Why: {}", ec.message());
+        fmt::print("[-] SSL handshake time: {} ms\r\n",
+                   std::chrono::duration_cast<std::chrono::milliseconds>(totalHandshakeTime).count());
 
         while (true)
         {

@@ -4,7 +4,8 @@
         "openssl",
         "boost",
         "fmt",
-        "spdlog"
+        "spdlog",
+        "cli11"
     ],
     "builtin-baseline": "98aa6396292d57e737a6ef999d4225ca488859d5"
 }

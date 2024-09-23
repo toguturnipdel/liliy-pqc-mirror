@@ -1,7 +1,7 @@
 # Include Vcpkg toolchain file
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
-cmake_minimum_required(VERSION 3.30.3)
+cmake_minimum_required(VERSION 3.29.3)
 project(lily_pqc)
 
 # Set C++ standard

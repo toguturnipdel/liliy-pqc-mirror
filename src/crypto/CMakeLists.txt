@@ -1,6 +1,7 @@
 # Create the library
 add_library(lily-crypto STATIC 
     OQSLoader.cpp
+    Key.cpp
 )
 
 # Link the required libraries

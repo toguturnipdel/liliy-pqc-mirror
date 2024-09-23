@@ -8,4 +8,5 @@ add_library(lily-net STATIC
 target_link_libraries(lily-net PRIVATE 
     Boost::boost
     spdlog::spdlog
+    oqsprovider
 )

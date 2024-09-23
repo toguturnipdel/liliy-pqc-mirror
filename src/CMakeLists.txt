@@ -10,4 +10,5 @@ target_link_libraries(lily-pqc PRIVATE
     lily-net
     lily-crypto
     Boost::boost
+    CLI11::CLI11
 )
