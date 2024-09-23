@@ -1,5 +1,5 @@
-#include <thread>
 #include <spdlog/spdlog.h>
+#include <thread>
 
 #include <lily/core/Constants.h>
 #include <lily/crypto/OQSLoader.h>
@@ -88,6 +88,11 @@ namespace lily::net
             spdlog::error("Lily-PQC server context set_session_id_context failed!");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
+
+        // Only allow TLS 1.3 for communication
+        SSL_CTX_set_options(listener.ctx.native_handle(), SSL_OP_ALLOW_CLIENT_RENEGOTIATION);
+        SSL_CTX_set_min_proto_version(listener.ctx.native_handle(), TLS1_3_VERSION);
+        SSL_CTX_set_max_proto_version(listener.ctx.native_handle(), TLS1_3_VERSION);
 
         // Set the key exchange algorithm
         if (SSL_CTX_set1_groups_list(listener.ctx.native_handle(), "x25519_kyber768") <= 0)
