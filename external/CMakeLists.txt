@@ -4,7 +4,11 @@ include(FetchContent)
 # Find OpenSSL and Boost using Vcpkg
 find_package(OpenSSL REQUIRED GLOBAL)
 find_package(spdlog REQUIRED GLOBAL)
-find_package(Boost REQUIRED GLOBAL)
+find_package(Boost
+    REQUIRED GLOBAL
+    COMPONENTS
+        asio outcome beast
+)
 find_package(fmt REQUIRED GLOBAL)
 find_package(CLI11 REQUIRED GLOBAL)
 

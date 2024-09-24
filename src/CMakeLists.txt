@@ -10,7 +10,9 @@ add_executable(lily-pqc main.cpp)
 target_link_libraries(lily-pqc PRIVATE 
     lily-net
     lily-crypto
-    Boost::boost
+    Boost::asio
+    Boost::outcome
+    Boost::beast
     CLI11::CLI11
 )
 

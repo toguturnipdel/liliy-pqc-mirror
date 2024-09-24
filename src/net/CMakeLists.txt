@@ -8,7 +8,9 @@ add_library(lily-net STATIC
 # Link the required libraries
 target_link_libraries(lily-net PRIVATE 
     lily-log
-    Boost::boost
+    Boost::asio
+    Boost::outcome
+    Boost::beast
     spdlog::spdlog
     oqsprovider
 )
