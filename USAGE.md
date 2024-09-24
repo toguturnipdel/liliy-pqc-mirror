@@ -16,8 +16,8 @@ Use the command below to create the PQC private key and certificate:
 $ ./lily-pqc gen-pqc --output-certificate-file=/path/to/output/cert.crt --private-key-file=/path/to/output/private.key --algo-name=p521_dilithium5
 ```
 
-- Change the `--output-certificate-file=/path/to/output/cert.crt` to the intended output file. Ensure the output file is not exist.
-- Change the `--private-key-file=/path/to/output/private.key` to the intended output file. Ensure the output file is not exist.
+- Modify the `--output-certificate-file=/path/to/output/cert.crt` to the desired output file path. Ensure that the specified output file does not already exist.
+- Modify the `--private-key-file=/path/to/output/private.key` to the desired output file path. Ensure that the specified output file does not already exist.
 - List of supported `--algo-name`:
 
     ```
