@@ -1,6 +1,7 @@
 # Add the subdirectory
-add_subdirectory(net)
 add_subdirectory(crypto)
+add_subdirectory(log)
+add_subdirectory(net)
 
 # Create the executable
 add_executable(lily-pqc main.cpp)

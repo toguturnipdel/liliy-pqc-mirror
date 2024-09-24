@@ -2,10 +2,12 @@
 add_library(lily-net STATIC 
     ServerListener.cpp
     ServerSession.cpp
+    ClientConnection.cpp
 )
 
 # Link the required libraries
 target_link_libraries(lily-net PRIVATE 
+    lily-log
     Boost::boost
     spdlog::spdlog
     oqsprovider

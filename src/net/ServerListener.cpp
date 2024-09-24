@@ -11,7 +11,7 @@ using namespace lily::core;
 namespace lily::net
 {
     ServerListener::ServerListener(uint16_t port):
-        ioc {std::make_unique<boost::beast::net::io_context>(1)}, ctx {boost::asio::ssl::context::tls_server},
+        ioc {std::make_unique<boost::beast::net::io_context>(1)}, ctx {boost::asio::ssl::context::tlsv13_server},
         endpoint {boost::asio::ip::make_address(constants::DEFAULT_SERVER_HOST), port}, acceptor {*ioc.get()}
     {
     }
