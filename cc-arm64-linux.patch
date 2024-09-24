@@ -1,0 +1,34 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1f7e0a0..a90b272 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,10 @@
+ # Include Vcpkg toolchain file
+ set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+ 
++# Cross compile to RaspberryPi
++set(VCPKG_TARGET_TRIPLET "arm64-linux" CACHE STRING "")
++set(VCPKG_HOST_TRIPLET "x64-linux" CACHE STRING "")
++
+ cmake_minimum_required(VERSION 3.29.3)
+ project(lily_pqc)
+ 
+diff --git a/external/CMakeLists.txt b/external/CMakeLists.txt
+index 1f119ef..42dfed2 100644
+--- a/external/CMakeLists.txt
++++ b/external/CMakeLists.txt
+@@ -16,11 +16,14 @@ find_package(CLI11 REQUIRED GLOBAL)
+ # Configure the liboqs
+ execute_process(
+     COMMAND cmake
++            -DCMAKE_SYSTEM_PROCESSOR:STRING=arm64
++            -DCMAKE_HOST_SYSTEM:STRING=Linux
+             -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE} 
+             -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=${CMAKE_EXPORT_COMPILE_COMMANDS} 
+             -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER} 
+             -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
+             -DOPENSSL_ROOT_DIR:FILEPATH=${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}
++            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_CURRENT_SOURCE_DIR}/liboqs/.CMake/toolchain_arm64.cmake
+             -DOQS_BUILD_ONLY_LIB:BOOL=ON
+             --no-warn-unused-cli 
+             -S${CMAKE_CURRENT_SOURCE_DIR}/liboqs
