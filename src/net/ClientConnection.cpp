@@ -25,7 +25,8 @@ namespace lily::net
         return *this;
     }
 
-    Expect<void> ClientConnection::sendDummyData(std::string const& serverHost, uint16_t serverPort)
+    Expect<void> ClientConnection::sendDummyData(std::string const& serverHost, uint16_t serverPort,
+                                                 std::string const& tlsGroup)
     {
         ClientConnection connection {};
 
@@ -45,17 +46,17 @@ namespace lily::net
         SSL_CTX_set_max_proto_version(connection.ctx.native_handle(), TLS1_3_VERSION);
 
         // Set the key exchange algorithm
-        if (SSL_CTX_set1_groups_list(connection.ctx.native_handle(), constants::SUPPORTED_PQC_GROUPS_LIST) <= 0)
+        if (SSL_CTX_set1_groups_list(connection.ctx.native_handle(), tlsGroup.c_str()) <= 0)
         {
-            spdlog::error("Lily-PQC server context set key exchange algorithm failed! Cause: SSL_CTX_set1_groups_list");
+            spdlog::error("Lily-PQC client context set key exchange algorithm failed! Cause: SSL_CTX_set1_groups_list");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
         // Set the supported signature algorithm
-        if (SSL_CTX_set1_sigalgs_list(connection.ctx.native_handle(), constants::SUPPORTED_PQC_SIGALGS_LIST) <= 0)
+        if (SSL_CTX_set1_sigalgs_list(connection.ctx.native_handle(), constants::SUPPORTED_SIGALGS_LIST) <= 0)
         {
             spdlog::error(
-                "Lily-PQC server context set supported signature algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
+                "Lily-PQC client context set supported signature algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 

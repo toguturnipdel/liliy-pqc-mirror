@@ -73,6 +73,13 @@ namespace lily::net
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
+        // Check whether the private key and certificate match or not
+        if (SSL_CTX_check_private_key(listener.ctx.native_handle()) <= 0)
+        {
+            spdlog::error("Lily-PQC server private key and certificate mismatch! Cause: SSL_CTX_check_private_key");
+            return ErrorCode::LILY_ERRORCODE_EXPECTED;
+        }
+
         // Disable the verification. The verification will only be necessary for mutual TLS.
         std::ignore = listener.ctx.set_verify_mode(boost::asio::ssl::verify_none, ec);
         if (ec)
@@ -103,7 +110,7 @@ namespace lily::net
         }
 
         // Set the supported signature algorithm
-        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), constants::SUPPORTED_PQC_SIGALGS_LIST) <= 0)
+        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), constants::SUPPORTED_SIGALGS_LIST) <= 0)
         {
             spdlog::error(
                 "Lily-PQC server context set supported signature algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
