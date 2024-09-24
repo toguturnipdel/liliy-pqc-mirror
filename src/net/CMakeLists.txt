@@ -1,7 +1,7 @@
 # Create the library
 add_library(lily-net STATIC 
-    NetworkListener.cpp
-    NetworkSession.cpp
+    ServerListener.cpp
+    ServerSession.cpp
 )
 
 # Link the required libraries

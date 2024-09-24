@@ -5,7 +5,7 @@
 
 #include <lily/crypto/Key.h>
 #include <lily/crypto/OQSLoader.h>
-#include <lily/net/NetworkListener.h>
+#include <lily/net/ServerListener.h>
 
 using namespace lily::core;
 using namespace lily::crypto;
@@ -42,7 +42,7 @@ int32_t main(int32_t argc, char** argv)
             [&]
             {
                 // Initialize the server with its configuration
-                auto outcomeListener {NetworkListener::create(port, certificateFile, privateKeyFile)};
+                auto outcomeListener {ServerListener::create(port, certificateFile, privateKeyFile)};
                 if (!outcomeListener)
                     return std::exit(EXIT_FAILURE);
                 auto listener {std::move(outcomeListener.assume_value())};

@@ -3,24 +3,24 @@
 
 #include <lily/core/Constants.h>
 #include <lily/crypto/OQSLoader.h>
-#include <lily/net/NetworkListener.h>
-#include <lily/net/NetworkSession.h>
+#include <lily/net/ServerListener.h>
+#include <lily/net/ServerSession.h>
 
 using namespace lily::core;
 
 namespace lily::net
 {
-    NetworkListener::NetworkListener(uint16_t port):
+    ServerListener::ServerListener(uint16_t port):
         ioc {std::make_unique<boost::beast::net::io_context>(1)}, ctx {boost::asio::ssl::context::tls_server},
         endpoint {boost::asio::ip::make_address(constants::DEFAULT_SERVER_HOST), port}, acceptor {*ioc.get()}
     {
     }
 
-    Expect<NetworkListener> NetworkListener::create(uint16_t port, std::filesystem::path const& serverCertificatePath,
-                                                    std::filesystem::path const& privateKeyPath)
+    Expect<ServerListener> ServerListener::create(uint16_t port, std::filesystem::path const& serverCertificatePath,
+                                                  std::filesystem::path const& privateKeyPath)
     {
-        // Create the `NetworkListener` default instance
-        NetworkListener listener {port};
+        // Create the `ServerListener` default instance
+        ServerListener listener {port};
 
         // Variable that collect the error code thrown by boost function
         boost::beast::error_code ec {};
@@ -96,14 +96,14 @@ namespace lily::net
         SSL_CTX_set_max_proto_version(listener.ctx.native_handle(), TLS1_3_VERSION);
 
         // Set the key exchange algorithm
-        if (SSL_CTX_set1_groups_list(listener.ctx.native_handle(), "x25519_kyber768") <= 0)
+        if (SSL_CTX_set1_groups_list(listener.ctx.native_handle(), constants::SUPPORTED_PQC_GROUPS_LIST) <= 0)
         {
             spdlog::error("Lily-PQC server context set key exchange algorithm failed! Cause: SSL_CTX_set1_groups_list");
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
         // Set the supported signature algorithm
-        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), "dilithium2:p256_dilithium2:rsa3072_dilithium2:dilithium3:p384_dilithium3:dilithium5:p521_dilithium5") <= 0)
+        if (SSL_CTX_set1_sigalgs_list(listener.ctx.native_handle(), constants::SUPPORTED_PQC_SIGALGS_LIST) <= 0)
         {
             spdlog::error(
                 "Lily-PQC server context set supported signature algorithm failed! Cause: SSL_CTX_set1_sigalgs_list");
@@ -113,7 +113,7 @@ namespace lily::net
         return listener;
     }
 
-    void NetworkListener::run()
+    void ServerListener::run()
     {
         // Variable that collect the error code thrown by boost function
         boost::beast::error_code ec {};
@@ -128,7 +128,7 @@ namespace lily::net
             if (ec)
                 spdlog::error("Lily-PQC server context accept failed! Why: {}", ec.message());
 
-            std::jthread {std::bind(&NetworkSession::run, NetworkSession {std::move(socket), this->ctx})}.detach();
+            std::jthread {std::bind(&ServerSession::run, ServerSession {std::move(socket), this->ctx})}.detach();
         }
     }
 } // namespace lily::net
