@@ -29,7 +29,12 @@ namespace lily::net
                                     std::chrono::high_resolution_clock::now() - beginHandshakeTime)
                                     .count()};
         if (ec)
-            return spdlog::error("Lily-PQC server SSL handshake with client failed! Why: {}", ec.message());
+        {
+            if (ec != boost::beast::net::ssl::error::stream_truncated and ec != boost::asio::error::broken_pipe and
+                ec != boost::asio::error::connection_reset)
+                return spdlog::error("Lily-PQC server SSL handshake with client failed! Why: {}", ec.message());
+            return;
+        }
 
         while (true)
         {

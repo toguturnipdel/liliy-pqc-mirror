@@ -72,11 +72,15 @@ namespace lily::net
         }
 
         // Make the connection on the IP address we get from a lookup
-        boost::beast::get_lowest_layer(stream).connect(resolvedServer, ec);
+        std::ignore = boost::beast::get_lowest_layer(stream).connect(resolvedServer, ec);
         if (ec)
         {
-            spdlog::error("Lily-PQC client connection to server failed! Why: {}", ec.message());
-            return ErrorCode::LILY_ERRORCODE_EXPECTED;
+            if (ec != boost::asio::error::connection_refused and ec != boost::beast::net::ssl::error::stream_truncated)
+            {
+                spdlog::error("Lily-PQC client connection to server failed! Why: {}", ec.message());
+                return ErrorCode::LILY_ERRORCODE_EXPECTED;
+            }
+            return ErrorCode::LILY_ERRORCODE_UNEXPECTED;
         }
 
         // Perform the SSL handshake
@@ -87,8 +91,13 @@ namespace lily::net
                                     .count()};
         if (ec)
         {
-            spdlog::error("Lily-PQC client SSL handshake with server failed! Why: {}", ec.message());
-            return ErrorCode::LILY_ERRORCODE_EXPECTED;
+            if (ec != boost::beast::net::ssl::error::stream_truncated and ec != boost::asio::error::broken_pipe and
+                ec != boost::asio::error::connection_reset)
+            {
+                spdlog::error("Lily-PQC client SSL handshake with server failed! Why: {}", ec.message());
+                return ErrorCode::LILY_ERRORCODE_EXPECTED;
+            }
+            return ErrorCode::LILY_ERRORCODE_UNEXPECTED;
         }
 
         // Set up an HTTP GET request message

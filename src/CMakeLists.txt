@@ -13,3 +13,9 @@ target_link_libraries(lily-pqc PRIVATE
     Boost::boost
     CLI11::CLI11
 )
+
+# Statically link libgcc and libstdc++
+target_link_options(lily-pqc PRIVATE 
+    -static-libgcc
+    -static-libstdc++
+)
