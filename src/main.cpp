@@ -24,11 +24,10 @@ int32_t main(int32_t argc, char** argv)
 
     // Handle `main run-server` execution
     auto mainRunServer {main.add_subcommand("server-run", "Run application as server")};
+    std::filesystem::path certificateFile {};
+    std::filesystem::path privateKeyFile {};
+    uint16_t port {};
     {
-        std::filesystem::path certificateFile {};
-        std::filesystem::path privateKeyFile {};
-        uint16_t port {};
-
         mainRunServer
             ->add_option("--certificate-file", certificateFile,
                          "The absolute path to the server's certificate file, in PEM format")
@@ -60,11 +59,10 @@ int32_t main(int32_t argc, char** argv)
     auto mainGenKeyCert {main.add_subcommand(
         "gen-pqc",
         "Generate PQC Key and Certificate (only valid for DSA algorithm because it will generate a certificate)")};
+    std::filesystem::path outputCertificateFile {};
+    std::filesystem::path outputPrivateKeyFile {};
+    std::string algoName {};
     {
-        std::filesystem::path outputCertificateFile {};
-        std::filesystem::path outputPrivateKeyFile {};
-        std::string algoName {};
-
         mainGenKeyCert
             ->add_option("--output-certificate-file", outputCertificateFile,
                          "The absolute path to the output certificate file (PEM format)")
@@ -79,7 +77,7 @@ int32_t main(int32_t argc, char** argv)
             ->add_option("--algo-name", algoName,
                          "The PQC algorithm name (only for DSA algorithm, such as dilithium5, p521_dilithium5)")
             ->required()
-            ->check(!CLI::ExistingFile);
+            ->check(CLI::TypeValidator<std::string> {});
         mainGenKeyCert->callback(
             [&]() -> Expect<void>
             {
@@ -93,12 +91,11 @@ int32_t main(int32_t argc, char** argv)
 
     // Handle `main run-client` execution
     auto mainRunClient {main.add_subcommand("client-run", "Run application as client")};
+    std::string serverHost {};
+    uint16_t serverPort {};
+    uint32_t concurrentNum {};
+    std::string tlsGroup {};
     {
-        std::string serverHost {};
-        uint16_t serverPort {};
-        uint32_t concurrentNum {};
-        std::string tlsGroup {};
-
         mainRunClient->add_option("--server-host", serverHost, "The server host address (eg, 192.168.1.2)")
             ->required()
             ->check(CLI::TypeValidator<std::string> {});
