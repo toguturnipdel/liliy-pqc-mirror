@@ -26,7 +26,7 @@ namespace lily::net
     }
 
     Expect<void> ClientConnection::sendDummyData(std::string const& serverHost, uint16_t serverPort,
-                                                 std::string const& tlsGroup)
+                                                 std::string const& tlsGroup, uint32_t dummyDataLength)
     {
         ClientConnection connection {};
 
@@ -102,10 +102,14 @@ namespace lily::net
         }
 
         // Set up an HTTP GET request message
-        boost::beast::http::request<boost::beast::http::string_body> req {boost::beast::http::verb::get, "/", 11};
+        boost::beast::http::request<boost::beast::http::string_body> req {boost::beast::http::verb::post, "/", 11};
         req.set(boost::beast::http::field::host, serverHost);
         req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+        req.set(boost::beast::http::field::content_type, "text/plain");
         req.keep_alive(false);
+
+        // Create dummy body with the given size
+        req.body().assign(dummyDataLength, 'A');
         req.prepare_payload();
 
         // Send the HTTP request to the remote host

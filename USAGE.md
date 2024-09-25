@@ -101,6 +101,10 @@ If the server runs successfully, the terminal will display:
 
 Keep the terminal open to ensure the server continues running.
 
+## HTTP Response
+
+The server will return the message body received from the client as the response.
+
 ## Server log generation and data recording
 
 After the client is executed, the server will generate a CSV file containing details about the handshake duration (in µs), data received (in bytes), time taken to receive data (in µs), data sent (in bytes), and time taken to send data (in µs). The log will be saved in the current working directory with the filename format **YYYY-mm-dd_HH:MM:SS_log_server.csv**.
@@ -128,12 +132,13 @@ hs_duration_us;recv_size;recv_duration_us;write_size;write_duration_us
 Use the command below to run the client:
 
 ```
-$ ./lily-pqc client-run --server-host=192.168.1.2 --server-port=7004 --concurrent-user=4 --tls-group=p256_kyber512
+$ ./lily-pqc client-run --server-host=192.168.1.2 --server-port=7004 --concurrent-user=4 --tls-group=p256_kyber512 --data-length=100
 ```
 
 - Change the `--server-host=192.168.1.2` to the actual server host
 - Change the `--server-host=7004` to the actual server port
 - Concurrency testing evaluates how well a `lily-pqc` server handles multiple users simultaneously performing the same actions. This process, also referred to as multi-user testing, assesses the server's ability to manage concurrent users. To adjust the number of users, modify the `--concurrent-user=4` flag to the desired level of concurrency.
+- Modify the `--data-length=100` to reflect the expected size (in bytes) of the auto-generated dummy message body that will be sent to the server
 - List of supported `--tls-group`:
 
     ```

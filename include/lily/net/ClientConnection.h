@@ -21,6 +21,7 @@ namespace lily::net
     public:
         ClientConnection(ClientConnection&& other);
         ClientConnection& operator=(ClientConnection&& other);
-        static core::Expect<void> sendDummyData(std::string const& serverHost, uint16_t serverPort, std::string const& tlsGroup);
+        static core::Expect<void> sendDummyData(std::string const& serverHost, uint16_t serverPort,
+                                                std::string const& tlsGroup, uint32_t dummyDataLength);
     };
 } // namespace lily::net

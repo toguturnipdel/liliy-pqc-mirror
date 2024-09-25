@@ -95,6 +95,7 @@ int32_t main(int32_t argc, char** argv)
     uint16_t serverPort {};
     uint32_t concurrentNum {};
     std::string tlsGroup {};
+    uint32_t dummyDataLength {};
     {
         mainRunClient->add_option("--server-host", serverHost, "The server host address (eg, 192.168.1.2)")
             ->required()
@@ -108,6 +109,10 @@ int32_t main(int32_t argc, char** argv)
         mainRunClient->add_option("--tls-group", tlsGroup, "The TLS group used")
             ->required()
             ->check(CLI::TypeValidator<std::string> {});
+        mainRunClient
+            ->add_option("--data-length", dummyDataLength, "The size of the data to be transmitted to the server (in bytes)")
+            ->required()
+            ->check(CLI::PositiveNumber);
         mainRunClient->callback(
             [&]
             {
@@ -118,18 +123,18 @@ int32_t main(int32_t argc, char** argv)
                 // Set-up concurrent users pool
                 std::vector<std::jthread> userThreads(concurrentNum);
                 for (auto& thread: userThreads)
-                    thread =
-                        std::jthread {[&]
-                                      {
-                                          // Send dummy data repeatedly
-                                          while (true)
-                                          {
-                                              if (!ClientConnection::sendDummyData(serverHost, serverPort, tlsGroup))
-                                                  ++totalFailedRequest;
-                                              else
-                                                  ++totalSuccessfulRequest;
-                                          }
-                                      }};
+                    thread = std::jthread {
+                        [&]
+                        {
+                            // Send dummy data repeatedly
+                            while (true)
+                            {
+                                if (!ClientConnection::sendDummyData(serverHost, serverPort, tlsGroup, dummyDataLength))
+                                    ++totalFailedRequest;
+                                else
+                                    ++totalSuccessfulRequest;
+                            }
+                        }};
 
                 //
                 std::jthread totalRequestPrinter {

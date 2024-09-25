@@ -63,6 +63,9 @@ namespace lily::net
                     res.set(boost::beast::http::field::content_type, "text/plain");
                     res.set(boost::beast::http::field::connection, req.keep_alive() ? "keep-alive" : "close");
                     res.keep_alive(req.keep_alive());
+
+                    // Echo the body sent by the client
+                    res.body().assign(std::move(req.body()));
                     res.prepare_payload();
                     return res;
                 }(std::move(req))};
@@ -101,7 +104,7 @@ namespace lily::net
 
         // Perform the SSL shutdown
         this->stream.shutdown(ec);
-        if (ec)
+        if (ec and ec != boost::beast::net::ssl::error::stream_truncated)
             return spdlog::error("Lily-PQC server SSL shutdown to client failed! Why: {}", ec.message());
     }
 } // namespace lily::net
