@@ -14,10 +14,10 @@ index 1f7e0a0..a90b272 100644
  project(lily_pqc)
  
 diff --git a/external/CMakeLists.txt b/external/CMakeLists.txt
-index 1f119ef..42dfed2 100644
+index 96f0bf1..342cbe6 100644
 --- a/external/CMakeLists.txt
 +++ b/external/CMakeLists.txt
-@@ -16,11 +16,14 @@ find_package(CLI11 REQUIRED GLOBAL)
+@@ -44,12 +44,15 @@ endif()
  # Configure the liboqs
  execute_process(
      COMMAND cmake
@@ -27,8 +27,9 @@ index 1f119ef..42dfed2 100644
              -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=${CMAKE_EXPORT_COMPILE_COMMANDS} 
              -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER} 
              -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
+             -DCMAKE_INSTALL_LIBDIR:STRING=lib
              -DOPENSSL_ROOT_DIR:FILEPATH=${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}
 +            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_CURRENT_SOURCE_DIR}/liboqs/.CMake/toolchain_arm64.cmake
              -DOQS_BUILD_ONLY_LIB:BOOL=ON
-             --no-warn-unused-cli 
+             --no-warn-unused-cli
              -S${CMAKE_CURRENT_SOURCE_DIR}/liboqs
