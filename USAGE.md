@@ -125,6 +125,24 @@ hs_duration_us;recv_size;recv_duration_us;write_size;write_duration_us
 ...
 ```
 
+## Server encapsulation record
+For each handshake performed, the server will execute the key encapsulation function to handle key exchange within the TLS mechanism. The execution time of the encapsulation will be logged in the file **log_server_oqsencaps_us.csv**. This file is continuously appended, so please manually clear it before restarting the server to prevent leftover data from previous runs.
+
+### CSV log sample
+```
+14
+14
+14
+13
+14
+14
+14
+14
+19
+16
+...
+```
+
 # Client
 
 ## How to run the client
@@ -229,6 +247,24 @@ hs_duration_us;write_size;write_duration_us;recv_size;recv_duration_us
 4076;83;5;117;104
 4033;83;5;117;84
 3978;83;5;117;95
+...
+```
+
+## Client decapsulation record
+For each handshake performed, the client will execute the key decapsulation function to handle key exchange within the TLS mechanism. The execution time of the decapsulation will be logged in the file **log_client_oqsdecaps_us.csv**. This file is continuously appended, so please manually clear it before restarting the client to prevent leftover data from previous runs.
+
+### CSV log sample
+```
+14
+14
+14
+13
+14
+14
+14
+14
+19
+16
 ...
 ```
 

@@ -1,0 +1,114 @@
+diff --git a/src/kem/kem.c b/src/kem/kem.c
+index b03da5db..f9e5d9df 100644
+--- a/src/kem/kem.c
++++ b/src/kem/kem.c
+@@ -2,11 +2,13 @@
+ 
+ #include <assert.h>
+ #include <stdlib.h>
++#include <time.h>
+ #if defined(_WIN32)
+ #include <string.h>
+ #define strcasecmp _stricmp
+ #else
+ #include <strings.h>
++#include <pthread.h>
+ #endif
+ 
+ #include <oqs/oqs.h>
+@@ -474,19 +476,93 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
+ 	}
+ }
+ 
++// Mutex to protect file access
++pthread_mutex_t encaps_mtx;
++
+ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ 	if (kem == NULL) {
+ 		return OQS_ERROR;
+ 	} else {
+-		return kem->encaps(ciphertext, shared_secret, public_key);
++		// Get start time
++		struct timespec start;
++		clock_gettime(CLOCK_MONOTONIC, &start);
++
++		// Execute the function
++		OQS_STATUS status = kem->encaps(ciphertext, shared_secret, public_key);
++
++		// Get end time
++		struct timespec end;
++		clock_gettime(CLOCK_MONOTONIC, &end);
++
++		// Calculate the elapsed time in microseconds
++		int64_t time_taken;
++		time_taken = (end.tv_sec - start.tv_sec) * 1000000;
++		time_taken += (end.tv_nsec - start.tv_nsec) / 1000;
++
++		// Lock the mutex before writing to the file
++		pthread_mutex_lock(&encaps_mtx);
++
++		FILE *fp = fopen("log_server_oqsencaps_us.csv", "a"); // Open file in append mode
++		if (fp == NULL) {
++			perror("Unable to open file");
++			pthread_mutex_unlock(&encaps_mtx);
++			exit(EXIT_FAILURE);
++		}
++
++		// Write the execution time to the CSV file
++		fprintf(fp, "%ld\r\n", time_taken);
++
++		fclose(fp);
++
++		// Unlock the mutex after writing
++		pthread_mutex_unlock(&encaps_mtx);
++
++		return status;
+ 	}
+ }
+ 
++// Mutex to protect file access
++pthread_mutex_t decaps_mtx;
++
+ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
+ 	if (kem == NULL) {
+ 		return OQS_ERROR;
+ 	} else {
+-		return kem->decaps(shared_secret, ciphertext, secret_key);
++		// Get start time
++		struct timespec start;
++		clock_gettime(CLOCK_MONOTONIC, &start);
++
++		// Execute the function
++		OQS_STATUS status = kem->decaps(shared_secret, ciphertext, secret_key);
++
++		// Get end time
++		struct timespec end;
++		clock_gettime(CLOCK_MONOTONIC, &end);
++
++		// Calculate the elapsed time in microseconds
++		int64_t time_taken;
++		time_taken = (end.tv_sec - start.tv_sec) * 1000000;
++		time_taken += (end.tv_nsec - start.tv_nsec) / 1000;
++
++		// Lock the mutex before writing to the file
++		pthread_mutex_lock(&decaps_mtx);
++
++		FILE *fp = fopen("log_client_oqsdecaps_us.csv", "a"); // Open file in append mode
++		if (fp == NULL) {
++			perror("Unable to open file");
++			pthread_mutex_unlock(&decaps_mtx);
++			exit(EXIT_FAILURE);
++		}
++
++		// Write the execution time to the CSV file
++		fprintf(fp, "%ld\r\n", time_taken);
++
++		fclose(fp);
++
++		// Unlock the mutex after writing
++		pthread_mutex_unlock(&decaps_mtx);
++
++		return status;
+ 	}
+ }
+ 
