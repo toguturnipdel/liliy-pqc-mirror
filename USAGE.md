@@ -143,6 +143,24 @@ For each handshake performed, the server will execute the key encapsulation func
 ...
 ```
 
+## Client certificate sign record
+For each handshake performed, the server will execute the certificate sign function to sign the handshake data in TLS mechanism. The execution time of the certificate signing will be logged in the file **log_server_oqssign_us.csv**. This file is continuously appended, so please manually clear it before restarting the server to prevent leftover data from previous runs.
+
+### CSV log sample
+```
+14
+14
+14
+13
+14
+14
+14
+14
+19
+16
+...
+```
+
 # Client
 
 ## How to run the client
@@ -252,6 +270,42 @@ hs_duration_us;write_size;write_duration_us;recv_size;recv_duration_us
 
 ## Client decapsulation record
 For each handshake performed, the client will execute the key decapsulation function to handle key exchange within the TLS mechanism. The execution time of the decapsulation will be logged in the file **log_client_oqsdecaps_us.csv**. This file is continuously appended, so please manually clear it before restarting the client to prevent leftover data from previous runs.
+
+### CSV log sample
+```
+14
+14
+14
+13
+14
+14
+14
+14
+19
+16
+...
+```
+
+## Client key generation record
+For each handshake performed, the client will execute the key generation function for key exchange within the TLS mechanism. The execution time of the key generation will be logged in the file **log_client_oqskeygen_us.csv**. This file is continuously appended, so please manually clear it before restarting the client to prevent leftover data from previous runs.
+
+### CSV log sample
+```
+14
+14
+14
+13
+14
+14
+14
+14
+19
+16
+...
+```
+
+## Client certificate verify record
+For each handshake performed, the client will execute the certificate verify function to verify the signature in TLS mechanism. The execution time of the certificate verification will be logged in the file **log_client_oqsverify_us.csv**. This file is continuously appended, so please manually clear it before restarting the client to prevent leftover data from previous runs.
 
 ### CSV log sample
 ```
