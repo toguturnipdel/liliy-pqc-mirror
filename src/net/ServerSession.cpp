@@ -80,7 +80,12 @@ namespace lily::net
                                     std::chrono::high_resolution_clock::now() - beginWriteTime)
                                     .count()};
             if (ec)
-                return spdlog::error("Lily-PQC server SSL write to client failed! Why: {}", ec.message());
+            {
+                if (ec != boost::beast::net::ssl::error::stream_truncated and ec != boost::asio::error::broken_pipe and
+                    ec != boost::asio::error::connection_reset)
+                    return spdlog::error("Lily-PQC server SSL write to client failed! Why: {}", ec.message());
+                return;
+            }
 
             // Log server SSL performance
             ServerLog::getInstance().write(handshakeDuration, readSize, readDuration, writeSize, writeDuration);
@@ -104,7 +109,11 @@ namespace lily::net
 
         // Perform the SSL shutdown
         this->stream.shutdown(ec);
-        if (ec and ec != boost::beast::net::ssl::error::stream_truncated)
-            return spdlog::error("Lily-PQC server SSL shutdown to client failed! Why: {}", ec.message());
+        if (ec)
+        {
+            if (ec != boost::beast::net::ssl::error::stream_truncated and ec != boost::asio::error::broken_pipe and
+                ec != boost::asio::error::connection_reset)
+                return spdlog::error("Lily-PQC server SSL shutdown to client failed! Why: {}", ec.message());
+        }
     }
 } // namespace lily::net
