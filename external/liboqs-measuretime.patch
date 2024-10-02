@@ -1,5 +1,5 @@
 diff --git a/src/kem/kem.c b/src/kem/kem.c
-index b03da5db..958c63b2 100644
+index b03da5db..65b3a3a4 100644
 --- a/src/kem/kem.c
 +++ b/src/kem/kem.c
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index b03da5db..958c63b2 100644
  #if defined(_WIN32)
  #include <string.h>
  #define strcasecmp _stricmp
-@@ -466,11 +468,104 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
+@@ -466,11 +468,105 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
  	}
  }
  
@@ -84,6 +84,7 @@ index b03da5db..958c63b2 100644
 +
 +		// Write the execution time to the CSV file
 +		fprintf(fp_keygen, "%ld\r\n", time_taken);
++		fflush(fp_keygen);
 +
 +		// Unlock the mutex after writing
 +		if(mtx_unlock(&keygen_mtx) != thrd_success)
@@ -117,7 +118,7 @@ index b03da5db..958c63b2 100644
  	}
  }
  
-@@ -478,7 +573,79 @@ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8
+@@ -478,7 +574,80 @@ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8
  	if (kem == NULL) {
  		return OQS_ERROR;
  	} else {
@@ -165,6 +166,7 @@ index b03da5db..958c63b2 100644
 +
 +		// Write the execution time to the CSV file
 +		fprintf(fp_encaps, "%ld\r\n", time_taken);
++		fflush(fp_encaps);
 +
 +		// Unlock the mutex after writing
 +		if(mtx_unlock(&encaps_mtx) != thrd_success)
@@ -198,7 +200,7 @@ index b03da5db..958c63b2 100644
  	}
  }
  
-@@ -486,7 +653,56 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
+@@ -486,7 +655,57 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  	if (kem == NULL) {
  		return OQS_ERROR;
  	} else {
@@ -244,6 +246,7 @@ index b03da5db..958c63b2 100644
 +
 +		// Write the execution time to the CSV file
 +		fprintf(fp_decaps, "%ld\r\n", time_taken);
++		fflush(fp_decaps);
 +
 +		// Unlock the mutex after writing
 +		if(mtx_unlock(&decaps_mtx) != thrd_success)
@@ -257,7 +260,7 @@ index b03da5db..958c63b2 100644
  }
  
 diff --git a/src/sig/sig.c b/src/sig/sig.c
-index 48a710e8..e532f07b 100644
+index 48a710e8..32c9e7a5 100644
 --- a/src/sig/sig.c
 +++ b/src/sig/sig.c
 @@ -2,6 +2,8 @@
@@ -269,7 +272,7 @@ index 48a710e8..e532f07b 100644
  #if defined(_WIN32)
  #include <string.h>
  #define strcasecmp _stricmp
-@@ -763,20 +765,168 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
+@@ -763,20 +765,170 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
  	}
  }
  
@@ -347,6 +350,7 @@ index 48a710e8..e532f07b 100644
 +
 +	// Write the execution time to the CSV file
 +	fprintf(fp_sign, "%ld\r\n", time_taken);
++	fflush(fp_sign);
 +
 +	// Unlock the mutex after writing
 +	if(mtx_unlock(&sign_mtx) != thrd_success)
@@ -432,6 +436,7 @@ index 48a710e8..e532f07b 100644
 +
 +	// Write the execution time to the CSV file
 +	fprintf(fp_verify, "%ld\r\n", time_taken);
++	fflush(fp_verify);
 +
 +	// Unlock the mutex after writing
 +	if(mtx_unlock(&verify_mtx) != thrd_success)
