@@ -1,3 +1,10 @@
+# Key Library
+Here is the list of key libraries related to the PQC utilized in this project:
+- **openssl** ([version: 3.3.2](https://github.com/openssl/openssl/releases/tag/openssl-3.3.2))
+- **liboqs** ([version: 0.11.0](https://github.com/open-quantum-safe/liboqs/releases/tag/0.11.0))
+- **oqs-provider** ([commit hash: 0312c00e33dddf63ce5c0402c162d4ee3169d0b0](https://github.com/open-quantum-safe/oqs-provider/tree/0312c00e33dddf63ce5c0402c162d4ee3169d0b0))
+- **qsc-key-encoder** ([commit hash: 1b6289dac9f7caf89d26bad2f1cf3cd628507af2](https://github.com/Quantum-Safe-Collaboration/qsc-key-encoder/tree/1b6289dac9f7caf89d26bad2f1cf3cd628507af2))
+
 # Compile to Linux-x64 (Tested on Ubuntu 22.04)
 Let's walk through the process of compiling `lily-pqc` for the `x86-64` architecture. I'll provide a clear step-by-step guide that you can modify to fit your specific requirements.
 
