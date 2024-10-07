@@ -26,6 +26,11 @@ $ sudo snap install cmake --classic
 $ cd lily-pqc
 ```
 
+- Download the submodules required by the project
+```
+$ git submodule update --init --recursive
+```
+
 - Configure the project
 ```
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release \
@@ -73,6 +78,11 @@ $ git clone --recurse-submodules git@github.com:mraflifirmansyah/lily-pqc.git
 - Change directory to the cloned repository
 ```
 $ cd lily-pqc
+```
+
+- Download the submodules required by the project
+```
+$ git submodule update --init --recursive
 ```
 
 - Patch to enable cross-compilation to `arm64` architecture
