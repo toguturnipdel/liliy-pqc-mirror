@@ -14,21 +14,22 @@ Let's walk through the process of compiling `lily-pqc` for the `x86-64` architec
 $ sudo apt update
 $ sudo apt upgrade
 ```
+
 - Install the software tools and libraries that are used to build and compile software:
 ```
 $ sudo apt install build-essential git clang-15 ninja-build curl zip unzip tar pkg-config autoconf autoconf-archive snapd
 $ sudo snap install cmake --classic
 ```
 
+- Clone this project
+```
+$ git clone --recurse-submodules git@github.com:mraflifirmansyah/lily-pqc.git
+```
+
 ## Build and Compilation
 - Change directory to the cloned repository
 ```
 $ cd lily-pqc
-```
-
-- Download the submodules required by the project
-```
-$ git submodule update --init --recursive
 ```
 
 - Configure the project
@@ -69,6 +70,7 @@ $ sudo apt upgrade
 $ sudo apt install build-essential git clang-15 ninja-build curl zip unzip tar pkg-config autoconf autoconf-archive snapd gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 $ sudo snap install cmake --classic
 ```
+
 - Clone this project
 ```
 $ git clone --recurse-submodules git@github.com:mraflifirmansyah/lily-pqc.git
@@ -78,11 +80,6 @@ $ git clone --recurse-submodules git@github.com:mraflifirmansyah/lily-pqc.git
 - Change directory to the cloned repository
 ```
 $ cd lily-pqc
-```
-
-- Download the submodules required by the project
-```
-$ git submodule update --init --recursive
 ```
 
 - Patch to enable cross-compilation to `arm64` architecture
