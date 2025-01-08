@@ -73,7 +73,7 @@ $ sudo snap install cmake --classic
 
 - Clone this project
 ```
-$ git clone --recurse-submodules git@github.com:mraflifirmansyah/lily-pqc.git
+$ git clone --recurse-submodules https://github.com/toguturnipdel/liliy-pqc-mirror.git
 ```
 
 ## Build and Compilation
