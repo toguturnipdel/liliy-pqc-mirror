@@ -21,3 +21,7 @@ target_link_options(lily-pqc PRIVATE
     -static-libgcc
     -static-libstdc++
 )
+
+# Add pigpio include directories and link libraries
+target_include_directories(lily-pqc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../external/pigpio)
+target_link_libraries(lily-pqc PUBLIC pigpio)

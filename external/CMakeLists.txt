@@ -44,12 +44,15 @@ endif()
 # Configure the liboqs
 execute_process(
     COMMAND cmake
+            -DCMAKE_SYSTEM_PROCESSOR:STRING=arm64
+            -DCMAKE_HOST_SYSTEM:STRING=Linux
             -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE} 
             -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=${CMAKE_EXPORT_COMPILE_COMMANDS} 
             -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER} 
             -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
             -DCMAKE_INSTALL_LIBDIR:STRING=lib
             -DOPENSSL_ROOT_DIR:FILEPATH=${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_CURRENT_SOURCE_DIR}/liboqs/.CMake/toolchain_arm64.cmake
             -DOQS_BUILD_ONLY_LIB:BOOL=ON
             --no-warn-unused-cli
             -S${CMAKE_CURRENT_SOURCE_DIR}/liboqs
@@ -96,3 +99,6 @@ set(OQS_PROVIDER_BUILD_STATIC ON CACHE BOOL "" FORCE)
 set(OQS_KEM_ENCODERS ON CACHE BOOL "" FORCE)
 set(liboqs_DIR "${CMAKE_CURRENT_BINARY_DIR}/liboqs/install/lib/cmake/liboqs" CACHE STRING "" FORCE)
 add_subdirectory(oqs-provider)
+
+# Include pigpio as an external library
+add_subdirectory(pigpio)

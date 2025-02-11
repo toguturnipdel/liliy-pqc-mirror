@@ -1,3 +1,4 @@
+#include <pigpio.h>
 #include <spdlog/spdlog.h>
 
 #include <lily/core/Constants.h>
@@ -84,6 +85,23 @@ namespace lily::net
             return ErrorCode::LILY_ERRORCODE_UNEXPECTED;
         }
 
+        // Inisialisasi pigpio
+        if (gpioInitialise() < 0) {
+            spdlog::error("pigpio initialisation failed.");
+            return ErrorCode::LILY_ERRORCODE_EXPECTED;
+        }
+
+        // Set GPIO pin 17 sebagai output
+        gpioSetMode(17, PI_OUTPUT);
+
+        // Blink LED yang terhubung ke GPIO pin 17
+        for (int i = 0; i < 10; ++i) {
+            gpioWrite(17, 1); // LED ON
+            time_sleep(1);    // Tunggu 1 detik
+            gpioWrite(17, 0); // LED OFF
+            time_sleep(1);    // Tunggu 1 detik
+        }
+
         // Perform the SSL handshake
         auto beginHandshakeTime {std::chrono::high_resolution_clock::now()};
         std::ignore = stream.handshake(boost::asio::ssl::stream_base::client, ec);
@@ -153,6 +171,9 @@ namespace lily::net
             return ErrorCode::LILY_ERRORCODE_EXPECTED;
         }
 
+        // Terminasi pigpio
+        gpioTerminate();
+        
         return success;
     }
 } // namespace lily::net
