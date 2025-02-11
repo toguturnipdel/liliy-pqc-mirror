@@ -4,6 +4,7 @@ Here is the list of key libraries related to the PQC utilized in this project:
 - **liboqs** ([version: 0.11.0](https://github.com/open-quantum-safe/liboqs/releases/tag/0.11.0))
 - **oqs-provider** ([commit hash: 0312c00e33dddf63ce5c0402c162d4ee3169d0b0](https://github.com/open-quantum-safe/oqs-provider/tree/0312c00e33dddf63ce5c0402c162d4ee3169d0b0))
 - **qsc-key-encoder** ([commit hash: 1b6289dac9f7caf89d26bad2f1cf3cd628507af2](https://github.com/Quantum-Safe-Collaboration/qsc-key-encoder/tree/1b6289dac9f7caf89d26bad2f1cf3cd628507af2))
+- **pigpio** ([master](https://github.com/joan2937/pigpio.git))
 
 # Compile to Linux-x64 (Tested on Ubuntu 22.04)
 Let's walk through the process of compiling `lily-pqc` for the `x86-64` architecture. I'll provide a clear step-by-step guide that you can modify to fit your specific requirements.
@@ -23,7 +24,7 @@ $ sudo snap install cmake --classic
 
 - Clone this project
 ```
-$ git clone --recurse-submodules https://github.com/toguturnipdel/liliy-pqc-mirror.git
+$ git clone --recurse-submodules git@github.com:toguturnipdel/liliy-pqc-mirror.git
 ```
 
 ## Build and Compilation
@@ -73,7 +74,7 @@ $ sudo snap install cmake --classic
 
 - Clone this project
 ```
-$ git clone --recurse-submodules https://github.com/toguturnipdel/liliy-pqc-mirror.git
+$ git clone --recurse-submodules git@github.com:toguturnipdel/liliy-pqc-mirror.git
 ```
 
 ## Build and Compilation

@@ -1,6 +1,10 @@
 # Include Vcpkg toolchain file
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
+# Cross compile to RaspberryPi
+set(VCPKG_TARGET_TRIPLET "arm64-linux" CACHE STRING "")
+set(VCPKG_HOST_TRIPLET "x64-linux" CACHE STRING "")
+
 cmake_minimum_required(VERSION 3.29.3)
 project(lily_pqc)
 
