@@ -10,3 +10,6 @@
 [submodule "external/qsc-key-encoder"]
 	path = external/qsc-key-encoder
 	url = https://github.com/Quantum-Safe-Collaboration/qsc-key-encoder.git
+[submodule "external/pigpio"]
+	path = external/pigpio
+	url = https://github.com/joan2937/pigpio.git
